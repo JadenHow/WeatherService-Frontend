@@ -1,70 +1,120 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Weather Analytics Application
 
-## Available Scripts
+A full-stack weather application that allows users to fetch and store weather data using the OpenWeatherMap API.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Fetch current weather data using coordinates (latitude/longitude)
+- Save weather records to the database
+- Perform CRUD operations on weather records
+- Redux state management with Redux Saga
+- Custom React hooks for data operations
+- H2 in-memory database for development
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
 
-### `npm test`
+- **Spring Boot 3**
+- **Spring Data JPA**
+- **H2 Database**
+- **WebClient** for API calls
+- **Lombok** for boilerplate reduction
+- **Jakarta Validation**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend
 
-### `npm run build`
+- **React**
+- **Redux Toolkit**
+- **Redux Saga**
+- **Custom React Hooks**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Setup Instructions
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository.
+2. Configure `application.properties`:
 
-### `npm run eject`
+```properties
+# H2 Database Configuration
+spring.datasource.url=jdbc:h2:mem:weatherdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# H2 Console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# OpenWeatherMap API Configuration
+weather.api.key=your_api_key_here
+weather.api.base-url=https://api.openweathermap.org
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Run the Spring Boot application.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Frontend Setup
 
-## Learn More
+1. Install dependencies:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm install
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Start the development server:
 
-### Code Splitting
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## API Endpoints
 
-### Analyzing the Bundle Size
+### Weather Operations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **GET** `/api/weather/current?lat={lat}&lon={lon}` - Get current weather
+- **POST** `/api/weather/records` - Create weather record
+- **GET** `/api/weather/records/{id}` - Get weather record by ID
+- **PUT** `/api/weather/records/{id}` - Update weather record
+- **DELETE** `/api/weather/records/{id}` - Delete weather record
 
-### Making a Progressive Web App
+## Database Access
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Access H2 Console at [http://localhost:8080/h2-console](http://localhost:8080/h2-console) with:
+  - **JDBC URL**: `jdbc:h2:mem:weatherdb`
+  - **Username**: `sa`
+  - **Password**: (leave empty)
 
-### Advanced Configuration
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```plaintext
+src/
+├── main/
+│   ├── java/
+│   │   └── com/weatheranalytics/
+│   │       ├── config/
+│   │       │   └── WebClientConfig.java
+│   │       ├── controller/
+│   │       │   └── WeatherController.java
+│   │       ├── dto/
+│   │       │   ├── WeatherData.java
+│   │       │   └── WeatherRecordRequest.java
+│   │       ├── model/
+│   │       │   └── WeatherRecord.java
+│   │       ├── repository/
+│   │       │   └── WeatherRepository.java
+│   │       └── service/
+│   │           └── WeatherService.java
+│   └── resources/
+│       └── application.properties
+```
 
-### Deployment
+## Custom React Hooks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `useCurrentWeather` - Fetch current weather data
+- `useCreateWeather` - Create new weather records
+- `useWeatherRecord` - Fetch specific weather records
+- `useUpdateWeather` - Update existing weather records
+- `useDeleteWeather` - Delete weather records
